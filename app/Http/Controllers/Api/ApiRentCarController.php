@@ -16,8 +16,8 @@ class ApiRentCarController extends Controller
     {
         $validated = $request->validated();
 
-        $user = User::with($validated['user_id'])->get();
-        $car = Car::with($validated['car_id'])->get();
+        $user = User::find($validated['user_id']);
+        $car = Car::find($validated['car_id']);
 
         DB::beginTransaction();
 
