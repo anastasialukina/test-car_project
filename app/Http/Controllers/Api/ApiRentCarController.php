@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Http\Requests\Api\ApiReleaseCarRequest;
 use App\Http\Requests\Api\ApiRentCarRequest;
 use Illuminate\Support\Facades\DB;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -29,5 +30,24 @@ class ApiRentCarController extends Controller
         return new JsonResponse([
             'message' => "Car $car->id successfully attached to the user $user->id",
         ]);
+    }
+
+    public function releaseCar(ApiReleaseCarRequest $request): JsonResponse
+    {
+        $validated = $request->validated();
+
+        if (!empty($validated['user_id'])) {
+            $user = User::find($validated['user_id']);
+            $user->cars()->sync([]);
+            return new JsonResponse([
+                'message' => "User $user->id successfully detached from the car",
+            ]);
+        } else {
+            $car = Car::find($validated['car_id']);
+            $car->users()->sync([]);
+            return new JsonResponse([
+                'message' => "Car $car->id successfully detached from the user",
+            ]);
+        }
     }
 }

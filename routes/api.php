@@ -21,3 +21,7 @@ Route::post('/rent_car',
     [App\Http\Controllers\Api\ApiRentCarController::class,
         'rentCar'])
     ->name('api.rentCar');
+Route::post('/release_car',
+    [App\Http\Controllers\Api\ApiRentCarController::class,
+        'releaseCar'])
+    ->name('api.releaseCar');
