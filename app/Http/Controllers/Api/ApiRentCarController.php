@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Requests\Api\ApiReleaseCarRequest;
 use App\Http\Requests\Api\ApiRentCarRequest;
+use App\Http\Resources\RentCarResource;
 use Illuminate\Support\Facades\DB;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
@@ -49,5 +50,10 @@ class ApiRentCarController extends Controller
                 'message' => "Car $car->id successfully detached from the user",
             ]);
         }
+    }
+
+    public function rents()
+    {
+        return RentCarResource::collection(User::has('cars')->get());
     }
 }

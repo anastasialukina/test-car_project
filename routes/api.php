@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Resources\RentCarResource;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -25,3 +27,8 @@ Route::post('/release_car',
     [App\Http\Controllers\Api\ApiRentCarController::class,
         'releaseCar'])
     ->name('api.releaseCar');
+
+Route::get('/rents',
+    [App\Http\Controllers\Api\ApiRentCarController::class,
+        'rents'])
+    ->name('api.rents');
