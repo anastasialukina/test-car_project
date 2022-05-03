@@ -12,5 +12,8 @@ class CarBrand extends Model
     /**
      * @var mixed|string
      */
-    public mixed $name;
+
+    protected $fillable = [
+        'name',
+    ];
 }

@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Car;
+use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -19,7 +20,13 @@ class DatabaseSeeder extends Seeder
         $this->call([
             UserSeeder::class,
             CarBrandSeeder::class,
+            CarModelSeeder::class,
         ]);
-        Car::factory()->count(50)->create();
+        Car::factory()
+            ->count(50)
+            ->create();
+        User::factory()
+            ->count(20)
+            ->create();
     }
 }
