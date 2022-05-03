@@ -8,4 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 class CarBrand extends Model
 {
     use HasFactory;
+
+    /**
+     * @var mixed|string
+     */
+    public mixed $name;
 }
