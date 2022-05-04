@@ -87,6 +87,7 @@ paths:
           description: Validation error
       description: |-
         Detach car from a user or a user from a car
+
         Depends on params
       requestBody:
         content:
