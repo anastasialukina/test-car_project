@@ -2,29 +2,15 @@
 
 namespace Tests\Feature;
 
-use App\Http\Resources\RentCarResource;
-use App\Models\Car;
-use App\Models\User;
 use Faker\Factory;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Facades\Artisan;
 use Tests\TestCase;
 
+use App\Models\Car;
+use App\Models\User;
+
 class RentCarTest extends TestCase
 {
-    /**
-     * A basic feature test example.
-     *
-     * @return void
-     */
-    public function test_example()
-    {
-        $response = $this->get('/');
-
-        $response->assertStatus(200);
-    }
-
     public function test_rent_and_release_car()
     {
         $method = 'post';
@@ -45,7 +31,9 @@ class RentCarTest extends TestCase
         $response = $this->json($method, $uri, ['car_id' => $car->id, 'user_id' => $user->id]);
         $response
             ->assertOk()
-            ->assertJsonStructure($structure);
+            ->assertJsonStructure($structure)
+            ->assertJsonPath('car_id', $car->id)
+            ->assertJsonPath('id', $user->id);
 
         /**
          * Release a car
@@ -62,7 +50,6 @@ class RentCarTest extends TestCase
         $response = $this->json($method, $uri, ['user_id' => $user->id]);
         $response
             ->assertOk();
-
     }
 
 
@@ -116,7 +103,6 @@ class RentCarTest extends TestCase
         Artisan::call('config:clear');
         Artisan::call('migrate:refresh');
         Artisan::call('db:seed');
-
     }
 
     public function tearDown(): void
@@ -124,6 +110,4 @@ class RentCarTest extends TestCase
         Artisan::call('migrate:rollback');
         parent::tearDown();
     }
-
-
 }
