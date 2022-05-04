@@ -14,7 +14,7 @@ use App\Models\User;
 
 class ApiRentCarController extends Controller
 {
-    public function rentCar(ApiRentCarRequest $request): JsonResponse
+    public function rentCar(ApiRentCarRequest $request): RentCarResource
     {
         $validated = $request->validated();
 
@@ -28,9 +28,7 @@ class ApiRentCarController extends Controller
 
         DB::commit();
 
-        return new JsonResponse([
-            'message' => "Car $car->id successfully attached to the user $user->id",
-        ]);
+        return new RentCarResource($user);
     }
 
     public function releaseCar(ApiReleaseCarRequest $request): JsonResponse
@@ -40,12 +38,14 @@ class ApiRentCarController extends Controller
         if (!empty($validated['user_id'])) {
             $user = User::find($validated['user_id']);
             $user->cars()->sync([]);
+
             return new JsonResponse([
                 'message' => "User $user->id successfully detached from the car",
             ]);
         } else {
             $car = Car::find($validated['car_id']);
             $car->users()->sync([]);
+
             return new JsonResponse([
                 'message' => "Car $car->id successfully detached from the user",
             ]);

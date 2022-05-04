@@ -1,0 +1,149 @@
+openapi: 3.0.0
+info:
+  title: car-app
+  version: '1.0'
+  description: API for renting cars
+  contact:
+    name: Anastasia
+    email: anastasia.lukina1602@icloud.com
+servers:
+  - url: 'http://localhost:8000'
+paths:
+  /api/rent_car:
+    post:
+      summary: Rent a car for some user
+      operationId: post-api-rent_car
+      responses:
+        '200':
+          description: OK
+          headers: { }
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Rent'
+        '422':
+          description: Validation error
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                car_id:
+                  type: integer
+                user_id:
+                  type: integer
+              required:
+                - car_id
+                - user_id
+            examples:
+              example-1:
+                value:
+                  car_id: 1
+                  user_id: 1
+              example-2:
+                value:
+                  car_id: 3
+                  user_id: 13
+        description: Attach a car to a particular user via ID
+      description: This method rents a car for a particular user you should pass in body
+  /api/rents:
+    get:
+      summary: Get list of active rents
+      tags: [ ]
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Rent'
+      operationId: get-api-rents
+      description: Show list of all users that have already rented cars and info about them
+  /api/release_car:
+    post:
+      summary: Release car from user or detach user from car
+      operationId: post-api-release_car
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+              examples:
+                example-1:
+                  value:
+                    message: string
+        '422':
+          description: Validation error
+      description: |-
+        Detach car from a user or a user from a car
+        Depends on params
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              oneOf:
+                - properties:
+                    car_id:
+                      type: integer
+                - properties:
+                    user_id:
+                      type: integer
+              type: object
+            examples:
+              example-1:
+                value:
+                  car_id: 1
+                  user_id: null
+              example-2:
+                value:
+                  user_id: 1
+                  car_id: null
+        description: We need car_id to release it from someone OR user_id to detach car from them
+components:
+  schemas:
+    Rent:
+      description: ''
+      type: object
+      properties:
+        id:
+          type: number
+        name:
+          type: string
+          minLength: 1
+        email:
+          type: string
+          minLength: 1
+        car_id:
+          type: number
+        car_brand:
+          type: string
+          minLength: 1
+        car_model:
+          type: string
+          minLength: 1
+      required:
+        - id
+        - name
+        - email
+        - car_id
+        - car_brand
+        - car_model
+      x-examples:
+        example-1:
+          id: 19
+          name: Orval Larkin DVM
+          email: may48@example.org
+          car_id: 11
+          car_brand: BMW
+          car_model: X5
